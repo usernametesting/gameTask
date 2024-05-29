@@ -1,7 +1,8 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+
 let rectX = canvas.width / 2;
-let gameRunning = true; 
+let gameRunning = true;
 const circle = {
   x: 200,
   y: 200,
@@ -22,9 +23,9 @@ function update() {
 
   drawCircle();
 
-  // Hızı artır
-  circle.dx += 0.02; 
-  circle.dy += 0.1; 
+  // speed
+  circle.dx += 0.03;
+  circle.dy += 0.1;
 
   // change position
   circle.x += circle.dx;
@@ -34,6 +35,8 @@ function update() {
   if (circle.x + circle.size > canvas.width || circle.x - circle.size < 0) {
     circle.dx *= -1;
   }
+
+
 
   // Detect top and bottom walls
   if (circle.y + circle.size > canvas.height || circle.y - circle.size < 0) {
@@ -45,29 +48,33 @@ function update() {
     (circle.x + circle.size < rectX || circle.x - circle.size > rectX + 200)
   ) {
     gameRunning = false;
-
-    ctx.fillStyle = 'red';
-    ctx.fillRect(rectX, canvas.height - 10, 200, 10); 
-    if (gameRunning) {
-      requestAnimationFrame(update);
-    }
   }
 
-  update();
 
-  document.addEventListener('keydown', handleKeyDown);
+  ctx.fillStyle = 'red';
+  ctx.fillRect(rectX, canvas.height - 10, 200, 10);
 
-  function handleKeyDown(event) {
-    if (!gameRunning) return; 
-    if (event.key === 'ArrowRight') {
-      rectX += 100; 
-    } else if (event.key === 'ArrowLeft') {
-      rectX -= 100; 
-    }
-    if (rectX < 0) {
-      rectX = 0;
-    } else if (rectX + 100 > canvas.width) {
-      rectX = canvas.width - 100;
-    }
+  if (gameRunning) {
+    requestAnimationFrame(update);
   }
 }
+
+
+update();
+
+document.addEventListener('keydown', handleKeyDown);
+
+function handleKeyDown(event) {
+  if (!gameRunning) return;
+  if (event.key === 'ArrowRight') {
+    rectX += 100;
+  } else if (event.key === 'ArrowLeft') {
+    rectX -= 100;
+  }
+  if (rectX < 0) {
+    rectX = 0;
+  } else if (rectX + 100 > canvas.width) {
+    rectX = canvas.width - 100;
+  }
+}
+
